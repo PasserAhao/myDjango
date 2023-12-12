@@ -5,6 +5,12 @@ try:
 except ImportError:
     pass
 
+MY_APPS = [
+    'apps.celery_task_test.apps.CeleryTaskTest',
+]
+
+INSTALLED_APPS += MY_APPS
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
