@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
 MY_APPS = [
     'apps.celery_task_test.apps.CeleryTaskTest',
+    'apps.commands'
 ]
 
 MIDDLEWARE = [
