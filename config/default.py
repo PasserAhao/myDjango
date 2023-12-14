@@ -38,6 +38,10 @@ INSTALLED_APPS = [
 
 ]
 
+MY_APPS = [
+    'apps.celery_task_test.apps.CeleryTaskTest',
+]
+
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
     # 'django.contrib.sessions.middleware.SessionMiddleware',

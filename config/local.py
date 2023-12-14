@@ -5,10 +5,9 @@ try:
 except ImportError:
     pass
 
-MY_APPS = [
-    'apps.celery_task_test.apps.CeleryTaskTest',
-]
+MY_APPS += [
 
+]
 INSTALLED_APPS += MY_APPS
 
 DATABASES = {

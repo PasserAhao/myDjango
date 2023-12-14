@@ -13,3 +13,7 @@ def test_print_num_view():
 @pytest.mark.local
 def test_print_num():
     assert print_num.delay("test")
+
+
+def test_print():
+    assert True
