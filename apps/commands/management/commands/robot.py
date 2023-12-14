@@ -6,6 +6,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('args', nargs='*', type=str, help='Multiple arguments')
+
     def handle(self, *args, **options):
         print(args)
         print(options)
