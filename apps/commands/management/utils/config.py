@@ -1,7 +1,4 @@
-from importlib import import_module
 from enum import Enum
-
-PREFIX = ">>> "
 
 
 class Color(Enum):
@@ -25,6 +22,7 @@ class CmdLogLevel(Enum):
     ERROR = "error"
 
 
+# 交互日志等级数值
 LOG_LEVEL_MAP = {
     CmdLogLevel.INFO.value: 2,
     CmdLogLevel.ERROR.value: 0,  # 这里的错误是交互模式中很重要的一个信息反馈, 必须展示
@@ -32,3 +30,6 @@ LOG_LEVEL_MAP = {
     CmdLogLevel.REMIND.value: 3,
     CmdLogLevel.DETAIL.value: 4,  # 这里才是正常情况下理解的error的内容
 }
+
+# 交互日志前缀
+PREFIX = ">>> "

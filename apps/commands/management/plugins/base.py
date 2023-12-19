@@ -1,6 +1,6 @@
-import json
 import inspect
 import functools
+from apps.commands.management.utils.common import value_format
 from apps.commands.management.utils.logger import CmdLogger
 
 
@@ -41,8 +41,9 @@ class MyBaseCommand:
 
     def help(self):
         for func, describe in self._get_methods_with_doc().items():
-            self.log.info(f"方法名称: {func}", f"方法注释: {describe}", prefix=False)
-            self.log.info(format("", "-^50"), prefix=False)
+            self.log.info(format(f"方法名称: {func}", "-^80"), prefix=False)
+            self.log.info(f"\n{describe}\n", prefix=False)
+        self.log.info(format("", "-^84"), prefix=False)
         self.log.waring("可能涉及危险操作, 请谨慎操作!!!")
 
     @staticmethod
@@ -51,13 +52,13 @@ class MyBaseCommand:
         for param in params:
             if "=" in param:
                 key, value = param.split("=")
-                func_kwargs[key] = json.loads(value)
+                func_kwargs[key] = value_format(param)
                 continue
-            func_args.append(json.loads(param))
+            func_args.append(value_format(param))
         return func_args, func_kwargs
 
     @staticmethod
-    def verify(*func_args, **func_kwargs) -> bool:
+    def verify(*func_args, **func_kwargs) -> (int, str):
         code, msg = 0, "OK"
         return code, msg
 
