@@ -5,6 +5,11 @@ try:
 except ImportError:
     pass
 
+MY_APPS += [
+
+]
+INSTALLED_APPS += MY_APPS
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
