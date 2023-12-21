@@ -4,7 +4,7 @@ from apps.commands.management.utils.config import CmdLogLevel, Color, PREFIX, LO
 
 color_level_map = {
     CmdLogLevel.INFO.value: Color.CYAN.value,
-    CmdLogLevel.DEBUG.value: Color.CYAN.value,
+    CmdLogLevel.DEBUG.value: Color.PURPLE.value,
     CmdLogLevel.WARNING.value: Color.YELLOW.value,
     CmdLogLevel.ERROR.value: Color.RED.value
 }
