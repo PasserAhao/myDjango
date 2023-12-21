@@ -8,7 +8,7 @@ from apps.commands.management.utils.logger import CmdLogger
 from apps.commands.management.plugins.default import DefaultCommand
 
 
-def dynamic_importer(path: str) -> dict:
+def dynamic_plugins_importer(path: str) -> dict:
     base_path = os.path.dirname(os.path.dirname(__file__))
     plugin_path = os.path.join(base_path, "plugins")  # 构建插件路径
 
@@ -36,7 +36,7 @@ class Command(BaseCommand):
     def __init__(self):
         super().__init__()
         plugin_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "plugins")
-        self.factory_map = dynamic_importer(plugin_dir)
+        self.factory_map = dynamic_plugins_importer(plugin_dir)
 
     def help(self, log: CmdLogger):
         for module_name, module in self.factory_map.items():
