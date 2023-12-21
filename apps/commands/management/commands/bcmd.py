@@ -31,7 +31,7 @@ def dynamic_plugins_importer(path: str) -> dict:
 
 
 class Command(BaseCommand):
-    help = "this is a test demo"
+    help = "一个命令集框架, 可以在这里丰富更多的自定义命令"
 
     def __init__(self):
         super().__init__()
@@ -53,7 +53,6 @@ class Command(BaseCommand):
         parser.add_argument("--plugin", type=str, default="default", help="选择要执行的插件")
         parser.add_argument("--list", action="store_true", help="展示所有的插件以及插件说明")
 
-        parser.add_argument("--root", action="store_true", help="是否允许操作危险操作")
         parser.add_argument("--func-help", action="store_true", help="显示某个方法的注释")
 
     def handle(self, *args, **options):
