@@ -1,7 +1,7 @@
 import os
 
 # 告诉pytest django的settings配置路径, 不然pytest找不到setting会报错
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 
 def pytest_runtest_call(item):
