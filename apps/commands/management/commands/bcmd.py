@@ -66,13 +66,14 @@ class Command(BaseCommand):
             if not options.get("interactive"):
                 self.cmd_interactive(client, args)
                 return
+            self.fast_interactive()
         except Exception as e:
             import traceback
             error_detail = traceback.format_exc()
             log.debug(error_detail)
             log.error(f"错误信息: {e}")
 
-    def fast_interactive(self, client, ):
+    def fast_interactive(self):
         pass
 
     @staticmethod
