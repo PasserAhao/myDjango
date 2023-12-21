@@ -21,11 +21,11 @@ class CmdLogLevel(Enum):
     ERROR = "error"
 
 
-# 交互日志等级数值
+# 交互日志等级数值(error在交互中是个重要的提示信息)
 LOG_LEVEL_MAP = {
-    CmdLogLevel.INFO.value: 2,
-    CmdLogLevel.ERROR.value: 0,  # 这里的错误是交互模式中很重要的一个信息反馈, 必须展示
+    CmdLogLevel.ERROR.value: 0,
     CmdLogLevel.WARNING.value: 1,
+    CmdLogLevel.INFO.value: 2,
     CmdLogLevel.DEBUG.value: 3,
 }
 
