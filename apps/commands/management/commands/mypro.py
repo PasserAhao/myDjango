@@ -70,7 +70,7 @@ class Command(BaseCommand):
         except Exception as e:
             import traceback
             error_detail = traceback.format_exc()
-            log.detail(error_detail)
+            log.debug(error_detail)
             log.error(f"错误信息: {e}")
 
     def fast_interactive(self, client, ):
@@ -81,4 +81,4 @@ class Command(BaseCommand):
         if not params:  # 没有任何参数的事情执行help方法
             params = ("help",)
         func_name, *func_args = params
-        client.exec(func_name, func_args)
+        client.handle_command(func_name, func_args)

@@ -16,8 +16,7 @@ class Color(Enum):
 
 class CmdLogLevel(Enum):
     INFO = "info"
-    DETAIL = "detail"
-    REMIND = "remind"
+    DEBUG = "debug"
     WARNING = "warning"
     ERROR = "error"
 
@@ -27,8 +26,7 @@ LOG_LEVEL_MAP = {
     CmdLogLevel.INFO.value: 2,
     CmdLogLevel.ERROR.value: 0,  # 这里的错误是交互模式中很重要的一个信息反馈, 必须展示
     CmdLogLevel.WARNING.value: 1,
-    CmdLogLevel.REMIND.value: 3,
-    CmdLogLevel.DETAIL.value: 4,  # 这里才是正常情况下理解的error的内容
+    CmdLogLevel.DEBUG.value: 3,  # 这里才是正常情况下理解的error的内容
 }
 
 # 交互日志前缀

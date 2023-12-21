@@ -4,9 +4,8 @@ from apps.commands.management.utils.config import CmdLogLevel, Color, PREFIX, LO
 
 color_level_map = {
     CmdLogLevel.INFO.value: Color.CYAN.value,
-    CmdLogLevel.DETAIL.value: Color.CYAN.value,
+    CmdLogLevel.DEBUG.value: Color.CYAN.value,
     CmdLogLevel.WARNING.value: Color.YELLOW.value,
-    CmdLogLevel.REMIND.value: Color.YELLOW.value,
     CmdLogLevel.ERROR.value: Color.RED.value
 }
 
@@ -61,11 +60,8 @@ class CmdLogger:
     def error(self, *message, prefix=True):
         self.printf(message, CmdLogLevel.ERROR.value, prefix=prefix)
 
-    def remind(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.REMIND.value, prefix=prefix)
-
     def waring(self, *message, prefix=True):
         self.printf(message, CmdLogLevel.WARNING.value, prefix=prefix)
 
-    def detail(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.DETAIL.value, prefix=prefix)
+    def debug(self, *message, prefix=True):
+        self.printf(message, CmdLogLevel.DEBUG.value, prefix=prefix)

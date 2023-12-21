@@ -12,7 +12,7 @@ def options(flag, *args, **kwargs):
             if hasattr(self, f"_{flag}"):
                 is_next = getattr(self, f"_{flag}")(func_name)
             if not is_next:
-                return
+                return None
             result = func(self, func_name, params)
             return result
 
@@ -24,19 +24,13 @@ def options(flag, *args, **kwargs):
 class MyBaseCommand:
     def __init__(self, logger: CmdLogger, config=None, *args, **kwargs):
         self.log = logger
-        self.config = config
-        self._default_exclude_func = ["exec", "run", "verify"]
+        self._config = config
+        self._default_exclude_func = ["handle_command", "run", "verify"]
         self.exclude_func = []
-        self.root_func = ["demo"]  # 这里记录下危险操作, 执行时必须带上 +root 参数
 
-    @options("root", help="是否校验方法有权限操作")
     @options("func_help", help="是否展示方法注释")
-    def exec(self, func_name, params):
+    def handle_command(self, func_name, params):
         func_args, func_kwargs = self.parser_args(params)
-        code, msg = self.verify(*func_args, **func_kwargs)
-        if code:
-            self.log.error(f"参数校验错误, 错误详情:{msg}")
-            return
         self.run(func_name, *func_args, **func_kwargs)
 
     def help(self):
@@ -56,11 +50,6 @@ class MyBaseCommand:
                 continue
             func_args.append(value_format(param))
         return func_args, func_kwargs
-
-    @staticmethod
-    def verify(*func_args, **func_kwargs) -> (int, str):
-        code, msg = 0, "OK"
-        return code, msg
 
     def run(self, func, *args, **kwargs):
         getattr(self, func)(*args, **kwargs)
@@ -83,7 +72,7 @@ class MyBaseCommand:
         return method_docs
 
     def _func_help(self, func_name):
-        if not self.config.get("func_help"):
+        if not self._config.get("func_help"):
             return True
         func_dic = self._get_methods_with_doc()
         if not func_dic.__contains__(func_name):
@@ -91,9 +80,3 @@ class MyBaseCommand:
             return False
         self.log.info(func_dic.get(func_name), "")
         return False
-
-    def _root(self, func_name):
-        if func_name in self.root_func and not self.config.get("root"):
-            self.log.error(f"{func_name} 涉及危险操作, 请使用root操作.   你可以使用 --root 开启root权限")
-            return False
-        return True
