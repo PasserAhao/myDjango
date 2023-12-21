@@ -22,7 +22,7 @@ class CmdLog:
 class CmdLogger:
 
     def __init__(self, level, *args, **kwargs):
-        self.level = LOG_LEVEL_MAP.get(level, 3)
+        self.level = LOG_LEVEL_MAP.get(level, 2)
 
     def _analyse_logs(self, log: CmdLog):
         """

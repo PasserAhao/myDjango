@@ -21,11 +21,11 @@ def options(flag, *args, **kwargs):
     return decorator
 
 
-class MyBaseCommand:
+class ConstCommand:
     def __init__(self, logger: CmdLogger, config=None, *args, **kwargs):
         self.log = logger
         self._config = config
-        self._default_exclude_func = ["handle_command", "run", "verify"]
+        self._default_exclude_func = ["handle_command", "run"]
         self.exclude_func = []
 
     @options("func_help", help="是否展示方法注释")
