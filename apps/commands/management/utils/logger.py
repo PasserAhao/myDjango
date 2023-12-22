@@ -1,12 +1,14 @@
 import sys
+
 from django.core.management.base import OutputWrapper
-from apps.commands.management.utils.config import CmdLogLevel, Color, PREFIX, LOG_LEVEL_MAP
+
+from apps.commands.management.utils.config import LOG_LEVEL_MAP, PREFIX, CmdLogLevel, Color
 
 color_level_map = {
     CmdLogLevel.INFO.value: Color.CYAN.value,
     CmdLogLevel.DEBUG.value: Color.PURPLE.value,
     CmdLogLevel.WARNING.value: Color.YELLOW.value,
-    CmdLogLevel.ERROR.value: Color.RED.value
+    CmdLogLevel.ERROR.value: Color.RED.value,
 }
 
 
@@ -20,7 +22,6 @@ class CmdLog:
 
 
 class CmdLogger:
-
     def __init__(self, level, *args, **kwargs):
         self.level = LOG_LEVEL_MAP.get(level, 2)
 
