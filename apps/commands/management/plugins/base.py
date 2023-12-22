@@ -1,5 +1,7 @@
 import inspect
 import functools
+from typing import Callable, Any
+
 from apps.commands.management.utils.common import value_format
 from apps.commands.management.utils.logger import CmdLogger
 
@@ -25,7 +27,7 @@ class ConstCommand:
     def __init__(self, logger: CmdLogger, config=None, *args, **kwargs):
         self.log = logger
         self._config = config
-        self._default_exclude_func = ["handle_command", "run"]
+        self._default_exclude_func = ["handle_command", "run", "help", "table_format"]
         self.exclude_func = []
 
     @options("func_help", help="是否展示方法注释")
@@ -80,3 +82,21 @@ class ConstCommand:
             return False
         self.log.info(func_dic.get(func_name), "")
         return False
+
+    def table_format(self, headers, datas):
+        def data_row(row, cws):
+            return "|" + "||".join([f"{cell: ^{cws[i]}}" for i, cell in enumerate(row)]) + "|"
+
+        # 找出每列的最大宽度
+        column_widths = [max(len(str(row[i])) + 2 for row in datas + [headers]) for i in range(len(headers))]
+        halving_line = "+" + "++".join([f"{'-' * num}" for num in column_widths]) + "+"
+        # 打印上边框
+        self.log.info(halving_line, prefix=False)
+        # 打印表头
+        self.log.info(data_row(headers, column_widths), prefix=False)
+        # 打印分隔线
+        self.log.info(halving_line, prefix=False)
+        # 打印数据行
+        [self.log.info(data_row(row, column_widths), prefix=False) for row in datas]
+        # 打印下边框
+        self.log.info(halving_line, prefix=False)

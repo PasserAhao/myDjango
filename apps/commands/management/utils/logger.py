@@ -39,10 +39,10 @@ class CmdLogger:
 
         color = color or color_level_map.get(level)
         if iter(msgs):
-            console.write(self.color_msg("\n".join(map(str, msgs)), color, prefix=prefix))
+            console.write(self.color_msg("\n".join(map(str, msgs)), color, prefix=prefix, suffix=True))
             [self._analyse_logs(CmdLog(_msg, level)) for _msg in msgs]
             return
-        console.write(self.color_msg(msgs, prefix=prefix), color)
+        console.write(self.color_msg(msgs, prefix=prefix, suffix=True), color)
         self._analyse_logs(CmdLog(msgs, level))
 
     def printf(self, msgs, level, *args, **kwargs):
@@ -51,8 +51,8 @@ class CmdLogger:
         self._printf(msgs, level, *args, **kwargs)
 
     @staticmethod
-    def color_msg(msg, color=Color.CYAN.value, prefix=True):
-        return f"{color}{PREFIX if prefix else ''}{msg}{Color.RESET.value}"
+    def color_msg(msg, color=Color.CYAN.value, prefix=False, suffix=False):
+        return f"{PREFIX if prefix else ''}{color}{msg}{Color.RESET.value if suffix else ''}"
 
     def info(self, *message, prefix=True):
         self.printf(message, CmdLogLevel.INFO.value, prefix=prefix)

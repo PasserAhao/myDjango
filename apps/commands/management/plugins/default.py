@@ -1,3 +1,6 @@
+import json
+import requests
+from apps.commands.management.utils.config import Color
 from apps.commands.management.plugins.base import ConstCommand
 
 """
@@ -31,6 +34,27 @@ class DefaultCommand(ConstCommand):
     def __init__(self, log, config):
         super().__init__(log, config)
         self.exclude_func = []
+        self.last_rmq_details = {}
+
+    def run(self, func, *args, **kwargs):
+        getattr(self, func)(*args, **kwargs)
+
+    def rely_health_check(self):
+        pass
+
+    def rabbitmq_queues_info(self):
+        """
+        获取rabbitmq队列详情信息
+        """
+        res = requests.get(url='http://localhost:25672/api/queues', auth=('guest', 'guest'))
+        aa = json.loads(res.content.decode())
+        headers = ['name', 'age', 'city']
+        table_data = [
+            ['Alice', 25, 'New York'],
+            ['Bob', 30, 'San Francisco'],
+            ['Charlie', 28, '20  -> 50 ']
+        ]
+        self.table_format(headers, table_data)
 
     def demo(self, name, age, *args, **kwargs):
         """
@@ -48,4 +72,9 @@ class DefaultCommand(ConstCommand):
                 self.age = _age
 
         self.log.info(f"{name} 今年 {age}岁了")
+        infos = [
+            f"{name}{self.log.color_msg(age, color=Color.RED.value)}",
+            f"{name}{self.log.color_msg(name, color=Color.BLUE.value)}"
+        ]
+        self.log.info(*infos)
         return People(name, age)
