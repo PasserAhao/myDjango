@@ -138,12 +138,12 @@ class ConstCommand:
         self.log.info(format("", "-^50"), prefix=False)
         for _func, doc in has_funcs.items():
             similarity = self._jaccard_similarity(func, _func)
-            if similarity < score:
+            if similarity < score and func not in _func:
                 continue
             self.log.info(f"方法名称: {_func}", prefix=False)
             self.log.info(f"使用说明: {doc}", prefix=False)
             self.log.info(format("", "-^50"), prefix=False)
-        self.log.info(self.log.color_msg(f"Maybe you're looking for some of the above",Color.PURPLE.value))
+        self.log.info(self.log.color_msg(f"未找到{func}方法, 为您找到以上相似方法...", Color.PURPLE.value))
 
     @staticmethod
     def _jaccard_similarity(str1, str2):
