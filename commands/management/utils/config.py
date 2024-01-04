@@ -34,8 +34,5 @@ PREFIX = ">>> "
 # string:red 用于处理带颜色的字符串格式
 COLOR_SPLIT = "-color:-"
 
-# rabbitmq 队列信息缓存key
-COMMAND_CACHE_KEY = "command_cache_key"
-
 # 方法相似度阈值
 FUNC_SIMILARITY_SCORE = 60
