@@ -2,7 +2,7 @@ import sys
 
 from django.core.management.base import OutputWrapper
 
-from apps.commands.management.utils.config import LOG_LEVEL_MAP, PREFIX, CmdLogLevel, Color
+from commands.management.utils.config import LOG_LEVEL_MAP, PREFIX, CmdLogLevel, Color
 
 color_level_map = {
     CmdLogLevel.INFO.value: Color.CYAN.value,
@@ -39,11 +39,14 @@ class CmdLogger:
         console = OutputWrapper((stderr or sys.stderr) if is_err else (stdout or sys.stdout))
 
         color = color or color_level_map.get(level)
+        result_msg = f"{PREFIX if prefix else ''}"
         if iter(msgs):
-            console.write("".join([self.color_msg(msg, color, prefix=prefix) for msg in msgs]))
+            result_msg += "".join([self.color_msg(msg, color) for msg in msgs])
+            console.write(result_msg)
             [self._analyse_logs(CmdLog(_msg, level)) for _msg in msgs]
             return
-        console.write(self.color_msg(msgs, color, prefix=prefix))
+        result_msg += self.color_msg(msgs, color)
+        console.write(result_msg)
         self._analyse_logs(CmdLog(msgs, level))
 
     def printf(self, msgs, level, *args, **kwargs):
@@ -52,8 +55,8 @@ class CmdLogger:
         self._printf(msgs, level, *args, **kwargs)
 
     @staticmethod
-    def color_msg(msg, color=Color.CYAN.value, prefix=False):
-        return f"{PREFIX if prefix else ''}{color}{msg}{Color.RESET.value}"
+    def color_msg(msg, color=Color.CYAN.value):
+        return f"{color}{msg}{Color.RESET.value}"
 
     def info(self, *message, prefix=True):
         self.printf(message, CmdLogLevel.INFO.value, prefix=prefix)

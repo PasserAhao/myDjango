@@ -17,5 +17,6 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('celery/', include('apps.celery_task_test.urls'))
+    path('celery/', include('apps.celery_task_test.urls')),
+    path(r'ht/', include('health_check.urls')),
 ]

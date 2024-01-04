@@ -21,13 +21,21 @@ class CmdLogLevel(Enum):
     ERROR = "error"
 
 
-# 交互日志等级数值(error在交互中是个重要的提示信息)
+# 交互日志等级数值
 LOG_LEVEL_MAP = {
-    CmdLogLevel.ERROR.value: 0,
-    CmdLogLevel.WARNING.value: 1,
     CmdLogLevel.INFO.value: 2,
+    CmdLogLevel.ERROR.value: 0,  # 这里的错误是交互模式中很重要的一个信息反馈, 必须展示
+    CmdLogLevel.WARNING.value: 1,
     CmdLogLevel.DEBUG.value: 3,
 }
 
 # 交互日志前缀
 PREFIX = ">>> "
+# string:red 用于处理带颜色的字符串格式
+COLOR_SPLIT = "-color:-"
+
+# rabbitmq 队列信息缓存key
+COMMAND_CACHE_KEY = "command_cache_key"
+
+# 方法相似度阈值
+FUNC_SIMILARITY_SCORE = 60

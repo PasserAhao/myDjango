@@ -1,7 +1,7 @@
 import json
 import requests
-from apps.commands.management.utils.config import Color
-from apps.commands.management.plugins.base import ConstCommand
+from commands.management.utils.config import Color, COLOR_SPLIT
+from commands.management.plugins.base import ConstCommand
 
 """
 编写新插件说明 !!!
@@ -45,15 +45,26 @@ class DefaultCommand(ConstCommand):
     def rabbitmq_queues_info(self):
         """
         获取rabbitmq队列详情信息
+        :param 无
         """
+        # todo 使用redis缓存上一次数据, 然后根据
         res = requests.get(url='http://localhost:25672/api/queues', auth=('guest', 'guest'))
         aa = json.loads(res.content.decode())
-        headers = ['name', 'age', 'city']
-        table_data = [
-            ['Alice', 25, 'New York'],
-            ['Bob', 30, 'San Francisco'],
-            ['Charlie', 28, '20  -> 50 ']
-        ]
+        headers = ['name', 'state', 'messages', 'ready', 'unacknowledged', 'consumers']
+        table_data = []
+        red_str = lambda s: f"{s}{COLOR_SPLIT}{Color.RED.value}"
+        for row in aa:
+            name = row["name"]
+            state = row["state"]
+            messages = row["messages"]
+            ready = row["messages_ready"]
+            ready = ready if int(ready) < 2 else red_str(ready)
+            unacknowledged = row["messages_unacknowledged"]
+            consumers = row["consumers"]
+            row_data = [
+                name, state, messages, ready, unacknowledged, consumers
+            ]
+            table_data.append(row_data)
         self.table_format(headers, table_data)
 
     def demo(self, name, age, *args, **kwargs):
