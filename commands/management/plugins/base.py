@@ -19,12 +19,12 @@
     传参为: 52 arg1=56 sss
     解释: 52 sss 两个普通参数会优先给 arg1 arg2 此时关键字参数还给arg1 或者 arg2 赋值就会报错
 """
-
+import re
 import functools
 import inspect
 
 from commands.management.utils.common import value_format
-from commands.management.utils.config import COLOR_SPLIT, FUNC_SIMILARITY_SCORE, Color
+from commands.management.utils.config import FUNC_SIMILARITY_SCORE, Color
 from commands.management.utils.logger import CmdLogger
 
 
@@ -172,27 +172,33 @@ class ConstCommand:
         return
 
     def table_format(self, headers, datas):
+        _compile = re.compile("\x1B\[\d+m(.*)\x1B\[\d+m")
+
+        def has_color_escape_code(input_str):
+            # 使用正则表达式来检查字符串中是否包含 ANSI 转义序列
+            ansi_escape_pattern = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+            return bool(ansi_escape_pattern.search(str(input_str)))
+
         def data_row(row, cws):
             body_data = []
             join_str = self.log.color_msg("|")
             for idx, cell in enumerate(row):
                 alignment = "<" if idx == 0 else "^"
-                if COLOR_SPLIT not in str(cell):
-                    body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}"))
+                if has_color_escape_code(cell):
+                    num = len(cell) - len(_compile.search(cell).group(1))
+                    body_data.append(format(cell, f"{alignment}{cws[idx] + num}"))
                     continue
-                cell, color = cell.rsplit(COLOR_SPLIT, 1)
-                body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}", color))
+                body_data.append(self.log.color_msg(format(cell, f"{alignment}{cws[idx]}")))
             return join_str + f"{join_str * 2}".join(body_data) + join_str
 
         def _len(string):
-            return len(string) - len(COLOR_SPLIT) - 2 if COLOR_SPLIT in string else len(string) + 2
+            return len(_compile.search(string).group(1)) if has_color_escape_code(string) else len(string) + 2
 
         # 找出每列的最大宽度
         column_widths = []
         for i in range(len(headers)):
             column_widths.append(max(_len(str(row[i])) for row in datas + [headers]))
         halving_line = "+" + "++".join([f"{'-' * num}" for num in column_widths]) + "+"
-
         # 打印上边框
         self.log.info(halving_line, prefix=False)
         # 打印表头
