@@ -174,14 +174,14 @@ class ConstCommand:
     def table_format(self, headers, datas):
         def data_row(row, cws):
             body_data = []
-            join_str = self.log.color_msg("|", prefix=None)
+            join_str = self.log.color_msg("|")
             for idx, cell in enumerate(row):
                 alignment = "<" if idx == 0 else "^"
                 if COLOR_SPLIT not in str(cell):
-                    body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}", prefix=None))
+                    body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}"))
                     continue
                 cell, color = cell.rsplit(COLOR_SPLIT, 1)
-                body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}", color, prefix=None))
+                body_data.append(self.log.color_msg(f"{cell:{alignment}{cws[idx]}}", color))
             return join_str + f"{join_str * 2}".join(body_data) + join_str
 
         def _len(string):
