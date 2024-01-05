@@ -31,8 +31,6 @@ LOG_LEVEL_MAP = {
 
 # 交互日志前缀
 PREFIX = ">>> "
-# string:red 用于处理带颜色的字符串格式
-COLOR_SPLIT = "-color:-"
 
 # 方法相似度阈值
 FUNC_SIMILARITY_SCORE = 60
