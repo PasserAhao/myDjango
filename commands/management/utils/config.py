@@ -1,7 +1,10 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
 
 class Color(Enum):
+    def __str__(self):
+        return self.value
+
     # 重置所有文本样式
     RESET = "\033[0m"
     # 不同颜色的 ANSI 转义码
@@ -14,23 +17,18 @@ class Color(Enum):
     WHITE = "\033[37m"  # 白色
 
 
-class CmdLogLevel(Enum):
-    INFO = "info"
-    DEBUG = "debug"
-    WARNING = "warning"
-    ERROR = "error"
+class CmdLogLevel(IntEnum):
+    INFO = 2
+    DEBUG = 1
+    WARNING = 3
+    ERROR = 10
 
-
-# 交互日志等级数值
-LOG_LEVEL_MAP = {
-    CmdLogLevel.INFO.value: 2,
-    CmdLogLevel.ERROR.value: 0,  # 这里的错误是交互模式中很重要的一个信息反馈, 必须展示
-    CmdLogLevel.WARNING.value: 1,
-    CmdLogLevel.DEBUG.value: 3,
-}
 
 # 交互日志前缀
 PREFIX = ">>> "
+
+# cmd 信息缓存key
+COMMAND_CACHE_KEY = "command_cache_key"
 
 # 方法相似度阈值
 FUNC_SIMILARITY_SCORE = 60

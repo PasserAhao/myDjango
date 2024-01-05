@@ -2,13 +2,13 @@ import sys
 
 from django.core.management.base import OutputWrapper
 
-from commands.management.utils.config import LOG_LEVEL_MAP, PREFIX, CmdLogLevel, Color
+from commands.management.utils.config import PREFIX, CmdLogLevel, Color
 
 color_level_map = {
-    CmdLogLevel.INFO.value: Color.CYAN.value,
-    CmdLogLevel.DEBUG.value: Color.PURPLE.value,
-    CmdLogLevel.WARNING.value: Color.YELLOW.value,
-    CmdLogLevel.ERROR.value: Color.RED.value,
+    CmdLogLevel.INFO: Color.CYAN,
+    CmdLogLevel.DEBUG: Color.PURPLE,
+    CmdLogLevel.WARNING: Color.YELLOW,
+    CmdLogLevel.ERROR: Color.RED,
 }
 
 
@@ -23,7 +23,7 @@ class CmdLog:
 
 class CmdLogger:
     def __init__(self, level, *args, **kwargs):
-        self.level = LOG_LEVEL_MAP.get(level, 2)
+        self.level = level or CmdLogLevel.INFO
 
     def _analyse_logs(self, log: CmdLog):
         """
@@ -34,8 +34,8 @@ class CmdLogger:
         """
         pass
 
-    def _printf(self, msgs, level=CmdLogLevel.INFO.value, color=None, stdout=None, stderr=None, prefix=True):
-        is_err = True if level == CmdLogLevel.ERROR.value else False
+    def _printf(self, msgs, level=CmdLogLevel.INFO, color=None, stdout=None, stderr=None, prefix=True):
+        is_err = True if level == CmdLogLevel.ERROR else False
         console = OutputWrapper((stderr or sys.stderr) if is_err else (stdout or sys.stdout))
 
         color = color or color_level_map.get(level)
@@ -50,22 +50,22 @@ class CmdLogger:
         self._analyse_logs(CmdLog(msgs, level))
 
     def printf(self, msgs, level, *args, **kwargs):
-        if self.level < LOG_LEVEL_MAP.get(level, 1):
+        if level < self.level:
             return
         self._printf(msgs, level, *args, **kwargs)
 
     @staticmethod
-    def color_msg(msg, color=Color.CYAN.value):
-        return f"{color}{msg}{Color.RESET.value}"
+    def color_msg(msg, color=Color.CYAN):
+        return f"{color}{msg}{Color.RESET}"
 
     def info(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.INFO.value, prefix=prefix)
+        self.printf(message, CmdLogLevel.INFO, prefix=prefix)
 
     def error(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.ERROR.value, prefix=prefix)
+        self.printf(message, CmdLogLevel.ERROR, prefix=prefix)
 
     def waring(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.WARNING.value, prefix=prefix)
+        self.printf(message, CmdLogLevel.WARNING, prefix=prefix)
 
     def debug(self, *message, prefix=True):
-        self.printf(message, CmdLogLevel.DEBUG.value, prefix=prefix)
+        self.printf(message, CmdLogLevel.DEBUG, prefix=prefix)

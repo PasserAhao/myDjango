@@ -7,7 +7,7 @@
   - 插件类必须注释说明插件的作以及范围等信息
   - 每一个方法都必须在注释中说明方法作用, 参数等信息(注释必须体现传参顺序)
 
-调用说明:
+使用说明:
   - 查看所有可以使用插件
     · python manage.py bcmd --list
   - 查看某个插件的所有可执行方法:
@@ -143,7 +143,7 @@ class CustomCommand:
             self.log.info(f"方法名称: {_func}", prefix=False)
             self.log.info(f"使用说明: {doc}", prefix=False)
             self.log.info(format("", "-^50"), prefix=False)
-        self.log.info(self.log.color_msg(f"未找到{func}方法, 为您找到以上相似方法...", Color.PURPLE.value))
+        self.log.info(self.log.color_msg(f"未找到{func}方法, 为您找到以上相似方法...", Color.PURPLE))
 
     @staticmethod
     def _jaccard_similarity(str1, str2):
