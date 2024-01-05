@@ -8,20 +8,25 @@
   - 每一个方法都必须在注释中说明方法作用, 参数等信息(注释必须体现传参顺序)
 
 调用说明:
-  使用demo方法:
-    python manage.py kac_admin demo xiaoming 26
-  如果非默认插件
-    python manage.py kac_admin demo xiaoming 56 --plugin=<your plugin name>
-  关键字传参:
-    python manage.py kac_admin demo age=56 name=xiaoming
-  关键字和普通参数传参(需要注意普通参数需要依照传参顺序传参)
-    比如func的参数为: func(arg1, arg2, arg3)
-    传参为: 52 arg1=56 sss
-    解释: 52 sss 两个普通参数会优先给 arg1 arg2 此时关键字参数还给arg1 或者 arg2 赋值就会报错
+  - 查看所有可以使用插件
+    · python manage.py bcmd --list
+  - 查看某个插件的所有可执行方法:
+    · python manage.py bcmd --plugin=default
+    · python manage.py bcmd --plugin=default --custom-help
+  - 执行插件中的某个方法(使用默认插件 所以可以取消 --plugin=default 参数)
+    · 基本命令: python manage.py bcmd <方法名> [参数...] --plugin=<插件名 不传使用默认插件>
+      eg:
+        python manage.py bcmd demo xiaoming 26
+        python manage.py bcmd demo name=xiaoming age=26
+  - 查看某个方法的使用说明
+    · python manage.py bcmd demo --func-help
+  - 显示更详细的日志
+    · python manage.py bcmd demo [...] --level=debug
+
 """
-import re
 import functools
 import inspect
+import re
 
 from commands.management.utils.common import value_format
 from commands.management.utils.config import FUNC_SIMILARITY_SCORE, Color
@@ -43,7 +48,7 @@ def options(flag, *args, **kwargs):
     return decorator
 
 
-class ConstCommand:
+class CustomCommand:
     def __init__(self, logger: CmdLogger, config=None, *args, **kwargs):
         self.log = logger
         self._config = config
@@ -96,15 +101,10 @@ class ConstCommand:
         获取对象中的所有方法以及注释说明
         :params obj: 类对象
         """
-        if not obj:
-            obj = self
-        methods = inspect.getmembers(obj, predicate=inspect.ismethod)
-        method_docs = {
-            method[0]: inspect.getdoc(method[1])
-            for method in methods
-            if not method[0].startswith("_") or method[0] in self.exclude_func
-        }
         exclude_func = [*self._default_exclude_func, *self.exclude_func]
+        methods = inspect.getmembers(obj or self, predicate=inspect.ismethod)
+        method_docs = {method[0]: inspect.getdoc(method[1]) for method in methods if not method[0].startswith("_")}
+
         [method_docs.pop(func) for func in exclude_func if method_docs.__contains__(func)]
         return method_docs
 
@@ -166,17 +166,17 @@ class ConstCommand:
             return
         func_dic = self._get_methods_with_doc()
         if not func_dic.__contains__(func_name):
-            self.log.error(f"type object '{self.__class__.__name__}' has not attribute '{func_name}'")
+            self.log.error(f"type object '{self.__class__.__name__}' has no attribute '{func_name}'")
             return
         self.log.info(func_dic.get(func_name))
         return
 
     def table_format(self, headers, datas):
-        _compile = re.compile("\x1B\[\d+m(.*)\x1B\[\d+m")
+        _compile = re.compile("\x1B\\[\\d+m(.*)\x1B\\[\\d+m")
 
         def has_color_escape_code(input_str):
             # 使用正则表达式来检查字符串中是否包含 ANSI 转义序列
-            ansi_escape_pattern = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+            ansi_escape_pattern = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
             return bool(ansi_escape_pattern.search(str(input_str)))
 
         def data_row(row, cws):
@@ -212,7 +212,7 @@ class ConstCommand:
 
     def demo(self, name, age, *args, **kwargs):
         """
-        请注意每个方法务必写清楚其作用, 参数(是否必填,默认值等), 返回值, 以及执行后肯呢个收到的影响
+        请注意每个方法务必写清楚其作用, 参数(是否必填,默认值等), 返回值, 以及执行后可能受到的影响等等
         eg:
             这是一个demo方法, 作用是打印一个人的年龄信息
             :param name (必填): 人的名字
