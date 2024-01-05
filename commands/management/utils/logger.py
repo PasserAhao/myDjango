@@ -23,7 +23,7 @@ class CmdLog:
 
 class CmdLogger:
     def __init__(self, level, *args, **kwargs):
-        self.level = level or CmdLogLevel.INFO
+        self.level = getattr(CmdLogLevel, level.upper(), CmdLogLevel.INFO)
 
     def _analyse_logs(self, log: CmdLog):
         """

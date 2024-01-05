@@ -1,6 +1,11 @@
 import os
+from dotenv import load_dotenv
+RUN_MODEL = os.environ.get("RUN_MODEL", "local")
+DJANGO_CONF_MODULE = "config.{}".format(RUN_MODEL)
 
-DJANGO_CONF_MODULE = "config.{}".format(os.environ.get("RUN_MODEL", "local"))
+if RUN_MODEL == "local":
+    load_dotenv("envs/local.env")
+
 try:
     _module = __import__(DJANGO_CONF_MODULE, globals(), locals(), ["*"])
 except ImportError as e:

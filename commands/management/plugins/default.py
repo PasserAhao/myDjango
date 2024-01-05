@@ -10,3 +10,9 @@ class DefaultCommand(CustomCommand):
         super().__init__(log, config)
         self.exclude_func = []
         self.last_rmq_details = {}
+
+    def demo(self, *args, **kwargs):
+        from common.redis_utils import get_redis_connection
+        redis = get_redis_connection()
+        redis.set("name", "asdasd")
+        print(redis.get("name"))
