@@ -28,9 +28,9 @@ import functools
 import inspect
 import re
 
-from commands.management.utils.common import value_format
-from commands.management.utils.config import FUNC_SIMILARITY_SCORE, Color
-from commands.management.utils.logger import CmdLogger
+from baseserver.common.common import value_format
+from baseserver.management.utils.config import FUNC_SIMILARITY_SCORE, Color
+from baseserver.management.utils.logger import CmdLogger
 
 
 def options(flag, *args, **kwargs):
@@ -82,7 +82,7 @@ class CustomCommand:
         for param in params:
             if "=" in param:
                 key, value = param.split("=")
-                func_kwargs[key] = value_format(param)
+                func_kwargs[key] = value_format(value)
                 continue
             func_args.append(value_format(param))
         return func_args, func_kwargs

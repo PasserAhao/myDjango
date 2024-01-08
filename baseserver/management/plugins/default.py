@@ -1,4 +1,4 @@
-from commands.management.plugins.base import CustomCommand
+from baseserver.management.plugins.base import CustomCommand
 
 
 class DefaultCommand(CustomCommand):
@@ -12,7 +12,7 @@ class DefaultCommand(CustomCommand):
         self.last_rmq_details = {}
 
     def demo(self, *args, **kwargs):
-        from common.redis_utils import get_redis_connection
+        from baseserver.common.redis_utils import get_redis_connection
         redis = get_redis_connection()
         redis.set("name", "asdasd")
         print(redis.get("name"))

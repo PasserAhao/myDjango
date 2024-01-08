@@ -6,7 +6,7 @@ except ImportError:
     pass
 
 MY_APPS = [
-    'commands.apps.CommandConfig',
+    'baseserver.apps.BaseServer',
 ]
 
 INSTALLED_APPS += MY_APPS

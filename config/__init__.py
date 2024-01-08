@@ -17,7 +17,7 @@ def get_env_or_raise(key):
 
 REDIS_HOST = get_env_or_raise("APP_REDIS_HOST")
 REDIS_PORT = get_env_or_raise("APP_REDIS_PORT")
-REDIS_SERVICE_NAME = os.environ.get("APP_REDIS_SERVICE_NAME", "mymaster")
+REDIS_SERVICE_NAME = os.environ.get("APP_REDIS_SERVICE_NAME", "master")
 REDIS_DB = get_env_or_raise("APP_REDIS_DB")
 REDIS_PASSWORD = get_env_or_raise("APP_REDIS_PASSWORD")
 SENTINEL_PASSWORD = os.environ.get("APP_SENTINEL_PASSWORD", "")

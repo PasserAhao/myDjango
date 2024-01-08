@@ -7,11 +7,21 @@ except ImportError:
 
 MY_APPS = [
     'apps.celery_task_test.apps.CeleryTaskTest',
-    'commands.apps.CommandConfig',
+    'baseserver.apps.BaseServer',
 ]
 
 INSTALLED_APPS += MY_APPS
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "mbg",
+        "USER": "root",
+        "PASSWORD": "admin123",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
+    },
+}
 try:
     from local_settings import *
 except ImportError:

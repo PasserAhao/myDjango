@@ -2,7 +2,7 @@ import sys
 
 from django.core.management.base import OutputWrapper
 
-from commands.management.utils.config import PREFIX, CmdLogLevel, Color
+from baseserver.management.utils.config import PREFIX, CmdLogLevel, Color
 
 color_level_map = {
     CmdLogLevel.INFO: Color.CYAN,
@@ -23,7 +23,7 @@ class CmdLog:
 
 class CmdLogger:
     def __init__(self, level, *args, **kwargs):
-        self.level = getattr(CmdLogLevel, level.upper(), CmdLogLevel.INFO)
+        self.level = getattr(CmdLogLevel, str(level).upper(), CmdLogLevel.INFO)
 
     def _analyse_logs(self, log: CmdLog):
         """

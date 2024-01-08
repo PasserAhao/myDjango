@@ -4,8 +4,8 @@ import importlib.util
 
 from django.core.management.base import BaseCommand
 
-from commands.management.utils.logger import CmdLogger
-from commands.management.plugins.default import DefaultCommand
+from baseserver.management.utils.logger import CmdLogger
+from baseserver.management.plugins.default import DefaultCommand
 
 
 def dynamic_plugins_importer(path: str) -> dict:
