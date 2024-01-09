@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse
-from apps.celery_task_test.celery_task import print_num
+from apps.celeryDemo.celery_task import print_num
 
 
 def test(request):

@@ -4,7 +4,7 @@ from celery.schedules import crontab
 CELERY_BROKER_URL = 'amqp://guest:guest@127.0.0.1:5672//'
 CELERY_BEAT_SCHEDULE = {
     'task1': {
-        'task': 'apps.celery_task_test.celery_task.print_num',
+        'task': 'apps.celeryDemo.celery_task.print_num',
         'schedule': 10,  # 每隔 10 秒执行一次
         'args': {"十秒执行一次", },
         'options': {
@@ -12,7 +12,7 @@ CELERY_BEAT_SCHEDULE = {
         }
     },
     'task2': {
-        'task': 'apps.celery_task_test.celery_task.print_num',
+        'task': 'apps.celeryDemo.celery_task.print_num',
         'schedule': crontab(hour=10, minute=17),
         'args': {"这个是定时任务", },
         'options': {
@@ -22,7 +22,7 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 CELERY_IMPORTS = (
-    "apps.celery_task_test.celery_task",
+    "apps.celeryDemo.celery_task",
 )
 
 DEFAULT_EXCHANGE = Exchange("default_exchange", type="direct")
@@ -34,7 +34,7 @@ CELERY_TASK_QUEUES = (
 )
 
 CELERY_TASK_ROUTES = {
-    "apps.celery_task_test.celery_task.*": {
+    "apps.celeryDemo.celery_task.*": {
         "queue": "task1",
         "routing_key": "task1"
     },

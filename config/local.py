@@ -6,7 +6,7 @@ except ImportError:
     pass
 
 MY_APPS = [
-    'apps.celery_task_demo.apps.CeleryTaskDemo',
+    'apps.celeryDemo.apps.CeleryTaskDemo',
     'baseserver.apps.BaseServer',
 ]
 

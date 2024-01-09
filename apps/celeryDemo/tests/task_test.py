@@ -1,6 +1,6 @@
 import pytest
 from django.test import Client
-from apps.celery_task_test.celery_task import print_num
+from apps.celeryDemo.celery_task import print_num
 
 
 @pytest.mark.test
